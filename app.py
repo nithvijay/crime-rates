@@ -25,6 +25,7 @@ map_data = pd.read_csv(
     "https://raw.githubusercontent.com/nithvijay/crime-rates/master/map.csv"
 )
 
+
 def make_2y_axis_plot(x, y1, trace_1, y2, trace_2, y1_title, y2_title, graph_title):
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.add_trace(
@@ -72,7 +73,14 @@ days_per_year_fig.update_layout(
     xaxis={"type": "category", "title": "Years"},
     title="The Number of Data Points per Year",
 )
-
+style_dict = {
+    "marginLeft": "10%",
+    "marginRight": "10%",
+    "marginTop": 20,
+    "marginBottom": 20,
+    "border": "lightgrey solid",
+    "padding": "20px 20px 20px 20px",
+}
 
 count_of_crimes_fig = go.Figure(
     data=[
@@ -116,25 +124,11 @@ app.layout = html.Div(
             # Node Final Project
             ## New York City Crime Analysis from 2006-2015
             
+            By: Oscar Daum, Alan Li, and Nithin Vijayakumar
+            
             ### Introduction
-            We chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptionsWe chose to examine New York City crime data along with weather and S&P500 stock data 
-            to discern any possible trends and make assumptions
+            Have you ever been scared robbed in public when the stock market was looking like a droopy red twizzler? Or have you ever been scared of being beat up in an alley when the temperature was between 40-50 degrees? Well fear no more as we decided to use our knowledge of data science to alleviate these fears and provide everyone the knowledge of what economic and weather settings are safest to leave the warm and cozy home. We used three time series data sets of New York City from around 2005-2016 and graphed them against each other to find any correlations between weather and crime or economic downturns and crime. Using the coordinate data provided in the crime dataset we were also able to map the crime out on the various boroughs of New York to find concentrations of crime over time. While this does not provide a thorough answer as to when it is safest to leave your home, it does provide an interesting and new insight to think about before daring to wander about the wild outdoors.
+
             
             ### Datasets
             
@@ -144,73 +138,74 @@ app.layout = html.Div(
             
             This dataset was very large, containing just under 5M rows.
             
-            2. S&P 500 Prices
-            - explanation:
-            - cleaning we had to do:
-            - link:
+            **2. S&P 500 Stock data**
             
-            3. Weather
-            - explanation:
-            - cleaning we had to do:
-            - link:
+            The second time-series data source was the S&P 500 Index. It contains stock prices at Open, Close and the Volume traded per day.
+            
+            **3. Weather**
+            
+            The third data set was New York City Weather. It contained daily information about minimum, maximum, and mean temperatures. As well as information about the amount of percipitation that day. 
             
             
             *Dataset:* |NYC Crime  | S&P 500 Stock  | NYC Weather
             ---|---|---|---
-            Start |  2006 | 2000  | 1948
-            End |  2018 | 2019  | 2015
+            Start Year |  2006 | 2000  | 1948
+            End Year |  2018 | 2019  | 2015
             Average Points per Year |  369103 |  240 |  361 
             Frequency |Every Instance | Daily| Daily 
-            ---
             
-            We merged based on Date, all three overlapped from 2006-2015. Stock market is not open everyday, 
-            so data is sporadic **Insert figure/statistic on how much data we have and how many data points we have per year**
+            We merged based on Date, where all three datasets overlapped from 2006-2015. This allowed us to plot correlations between
+            variables to determine if there was any relationship. In addition, it is important to note that the S&P500 data 
+            is only from when the stock market is open, not everyday. The following plot shows the number of data points we 
+            have for each year due to this reason. Out of the 365 days in a year, we have around 251 for each year.
             """
                 ),
                 dcc.Graph(id="days_per_year", figure=days_per_year_fig),
                 dcc.Markdown(
                     """
             
-            This graph shows the number of data points that we had per year after merging all three datasetes. 
+            This plot also represents how many data points we had per year in our final daily dataset.
             
-            ### Basic Correlation
-            
-            
+            ### Crime EDA          
             """
                 ),
                 dcc.Graph(figure=count_of_crimes_fig),
                 dcc.Markdown(
                     """
             
-            This shows the most popular crimes
+            This graph shows the 20 most popular crimes that were committed in New York City from 2006-2015. It is important to note that certain crime descriptions were omitted. 
+            In the original dataset, many crimes were not given detailed labels; they were just labeled as 'Unclassified'. In addition, some crimes were classified as two different charges. 
+            These were separated and counted individually.
             
-            
+            **Interactive New York City Crime Map**
             """
                 ),
                 dcc.Graph(figure=map_fig),
                 dcc.Markdown(
                     """
             
-            This map shows
-                       
+            This is an interactive map that shows the concentration of crimes in New York City. The darker the spot, the more crimes committed in that spot over a 13 year time-frame from 2006 to 2018.   
+            
+            ### Correlation between Datasets
+            
+            Select the main time-series data sets that crime will be compared to.
             """
                 ),
                 html.Div(
-                    [
-                        html.P(children="Select what to graph"),
-                        dcc.RadioItems(
-                            id="radio-initial",
-                            options=[
-                                {"label": "S&P500", "value": "sp"},
-                                {"label": "NYC Weather Data", "value": "weather"},
-                            ],
-                            value="sp",
-                        ),
-                    ]
+                    dcc.RadioItems(
+                        id="radio-initial",
+                        options=[
+                            {"label": "S&P500", "value": "sp"},
+                            {"label": "NYC Weather Data", "value": "weather"},
+                        ],
+                        value="sp",
+                    ),
                 ),
                 html.Div(
                     [
-                        html.P(children="Select column to graph"),
+                        html.P(
+                            children="Select the variable within the dataset that will be plotted against crime"
+                        ),
                         dcc.RadioItems(
                             id="y2_selector",
                             options=col_options_sp,
@@ -218,41 +213,60 @@ app.layout = html.Div(
                         ),
                     ]
                 ),
+                html.Div(
+                    children=[
+                        dcc.Graph(id="weekly-by-year"),
+                        dcc.Slider(
+                            id="years-slider",
+                            min=weekly["Year"].min(),
+                            max=weekly["Year"].max(),
+                            value=weekly["Year"].min(),
+                            marks={
+                                str(year): {"label": str(year)}
+                                for year in weekly["Year"].unique()
+                            },
+                        ),
+                        html.Br(),
+                        dcc.Markdown(
+                            """
+                This graph shows the number of arrests **weekly** compared to the selected time-series data.
+                
+                The slider indicates the year that is begin plotted. To change the year, drag the slider to the desired year and the graph autoupdates.
+                """
+                        ),
+                    ],
+                    style={"padding": "2px 2% 2% 2%"},
+                ),
+                html.Br(),
+                html.Div(
+                    [
+                        dcc.Graph(id="daily_graph"),
+                        dcc.RangeSlider(
+                            id="daily-range-slider",
+                            min=daily["UnixTime"].min(),
+                            max=daily["UnixTime"].max(),
+                            value=[daily["UnixTime"].min(), daily["UnixTime"].max()],
+                            marks=marks,
+                        ),
+                        html.Br(),
+                        html.Br(),
+                        dcc.Markdown(
+                            """
+                This graph shows the number of arrests **daily** compared to the selected time-series data.
+                
+                The slider indicates the range of dates that are begin plotted. To change the range, drag either end of the slider to the desired dates and the graph autoupdates.
+                """
+                        ),
+                    ],
+                    style={"padding": "2px 2% 2% 2%"},
+                ),
+                dcc.Markdown(
+                    """
+                Check out the github repo [here](https://github.com/nithvijay/crime-rates)!
+                """
+                ),
             ],
-            style={
-                "marginLeft": "15%",
-                "marginRight": "15%",
-                "marginTop": 20,
-                "marginBottom": 20,
-                "border": "thin lightgrey",
-                "padding": "6px 0px 0px 8px",
-            },
-        ),
-        dcc.Graph(id="weekly-by-year"),
-        html.Div(
-            children=dcc.Slider(
-                id="years-slider",
-                min=weekly["Year"].min(),
-                max=weekly["Year"].max(),
-                value=weekly["Year"].min(),
-                marks={
-                    str(year): {"label": str(year)} for year in weekly["Year"].unique()
-                },
-            ),
-            style={"padding": "0px 20px 20px 20px"},
-        ),
-        html.Br(),
-        dcc.Graph(id="daily_graph"),
-        html.Div(
-            [
-                dcc.RangeSlider(
-                    id="daily-range-slider",
-                    min=daily["UnixTime"].min(),
-                    max=daily["UnixTime"].max(),
-                    value=[daily["UnixTime"].min(), daily["UnixTime"].max()],
-                    marks=marks,
-                )
-            ]
+            style=style_dict,
         ),
     ]
 )
@@ -287,7 +301,7 @@ def update_weekly_app(year, col):
         trace_2=description,
         y1_title="Number of Arrests",
         y2_title=description,
-        graph_title="This is a weekly graph",
+        graph_title="Weekly Number of Arrests",
     )
     fig.update_xaxes(
         ticktext=[
@@ -308,7 +322,6 @@ def update_weekly_app(year, col):
     [Input("daily-range-slider", "value"), Input("y2_selector", "value")],
 )
 def update_daily(value, col):
-    print(value)
     date_begin = datetime.fromtimestamp(value[0] / 1e9)
     date_end = datetime.fromtimestamp(value[1] / 1e9)
     daily_by = daily[(daily["Date"] > date_begin) & (daily["Date"] < date_end)]
@@ -324,7 +337,7 @@ def update_daily(value, col):
         trace_2=description,
         y1_title="Number of Arrests",
         y2_title=description,
-        graph_title="This is a daily graph",
+        graph_title="Daily Number of Arrests",
     )
     return [fig]
 
