@@ -18,6 +18,12 @@ daily["UnixTime"] = daily["Date"].astype(np.int64)
 weekly = pd.read_csv(
     "https://raw.githubusercontent.com/nithvijay/crime-rates/master/weekly.csv"
 )
+count_of_crimes = pd.read_csv(
+    "https://raw.githubusercontent.com/nithvijay/crime-rates/master/counts_of_crimes.csv"
+)
+map_data = pd.read_csv(
+    "https://raw.githubusercontent.com/nithvijay/crime-rates/master/map.csv"
+)
 
 def make_2y_axis_plot(x, y1, trace_1, y2, trace_2, y1_title, y2_title, graph_title):
     fig = make_subplots(specs=[[{"secondary_y": True}]])
@@ -48,7 +54,53 @@ marks_df["style"] = [
     for i in range(marks_df.shape[0])
 ]
 marks = marks_df.set_index("UnixTime").to_dict("index")
-marks
+
+days_per_year = (
+    daily.groupby(daily["Date"].dt.year)
+    .size()
+    .reset_index()
+    # .rename({"Date": "Year", 0: "Number of Data Points per Year"}, axis=1)
+)
+days_per_year_fig = go.Figure(
+    go.Bar(name="Test", x=days_per_year["Date"], y=days_per_year[0])
+)
+days_per_year_fig.update_layout(
+    yaxis={
+        "range": [days_per_year[0].min() - 5, days_per_year[0].max() + 5],
+        "title": "Number of Data Points",
+    },
+    xaxis={"type": "category", "title": "Years"},
+    title="The Number of Data Points per Year",
+)
+
+
+count_of_crimes_fig = go.Figure(
+    data=[
+        go.Pie(
+            labels=count_of_crimes["Classification"],
+            values=count_of_crimes["Number of Instances"],
+        )
+    ]
+)
+count_of_crimes_fig.update_layout(title="Top 20 Most Popular Crimes")
+
+map_fig = go.Figure(
+    go.Scattermapbox(
+        lat=map_data["RoundedLat"],
+        lon=map_data["RoundedLong"],
+        marker={
+            "size": map_data["bins"] / 2,
+            "color": map_data["bins"],
+            "colorscale": "YlGnBu",
+            "opacity": 0.3,
+        },
+    ),
+)
+map_fig.update_layout(
+    mapbox_style="carto-positron",
+    margin={"r": 0, "t": 0, "l": 0, "b": 0},
+    mapbox={"center": {"lat": 40.7, "lon": -74}, "zoom": 9},
+)
 
 sp_options = ["Open", "Close", "Volume"]
 col_options_sp = [dict(label=x, value=x) for x in sp_options]
@@ -86,10 +138,11 @@ app.layout = html.Div(
             
             ### Datasets
             
-            1. NYC Crime Data
-            - explanation:
-            - cleaning we had to do:
-            - link:
+            **1. NYC Crime Data**
+            
+            This dataset contains the public crime data from New York City from 2006 to 2018. It has every instance of a crime committed, with details about location, type, and severity.
+            
+            This dataset was very large, containing just under 5M rows.
             
             2. S&P 500 Prices
             - explanation:
@@ -101,11 +154,45 @@ app.layout = html.Div(
             - cleaning we had to do:
             - link:
             
+            
+            *Dataset:* |NYC Crime  | S&P 500 Stock  | NYC Weather
+            ---|---|---|---
+            Start |  2006 | 2000  | 1948
+            End |  2018 | 2019  | 2015
+            Average Points per Year |  369103 |  240 |  361 
+            Frequency |Every Instance | Daily| Daily 
+            ---
+            
             We merged based on Date, all three overlapped from 2006-2015. Stock market is not open everyday, 
             so data is sporadic **Insert figure/statistic on how much data we have and how many data points we have per year**
+            """
+                ),
+                dcc.Graph(id="days_per_year", figure=days_per_year_fig),
+                dcc.Markdown(
+                    """
             
+            This graph shows the number of data points that we had per year after merging all three datasetes. 
             
             ### Basic Correlation
+            
+            
+            """
+                ),
+                dcc.Graph(figure=count_of_crimes_fig),
+                dcc.Markdown(
+                    """
+            
+            This shows the most popular crimes
+            
+            
+            """
+                ),
+                dcc.Graph(figure=map_fig),
+                dcc.Markdown(
+                    """
+            
+            This map shows
+                       
             """
                 ),
                 html.Div(
@@ -240,7 +327,6 @@ def update_daily(value, col):
         graph_title="This is a daily graph",
     )
     return [fig]
-
 
 if __name__ == "__main__":
     app.run_server(debug=True)
