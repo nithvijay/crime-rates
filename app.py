@@ -121,14 +121,11 @@ app.layout = html.Div(
             children=[
                 dcc.Markdown(
                     """
-            # Node Final Project
+            # Dash Test
             ## New York City Crime Analysis from 2006-2015
             
-            By: Oscar Daum, Alan Li, and Nithin Vijayakumar
+            By: Nithin Vijayakumar
             
-            ### Introduction
-            Have you ever been scared robbed in public when the stock market was looking like a droopy red twizzler? Or have you ever been scared of being beat up in an alley when the temperature was between 40-50 degrees? Well fear no more as we decided to use our knowledge of data science to alleviate these fears and provide everyone the knowledge of what economic and weather settings are safest to leave the warm and cozy home. We used three time series data sets of New York City from around 2005-2016 and graphed them against each other to find any correlations between weather and crime or economic downturns and crime. Using the coordinate data provided in the crime dataset we were also able to map the crime out on the various boroughs of New York to find concentrations of crime over time. While this does not provide a thorough answer as to when it is safest to leave your home, it does provide an interesting and new insight to think about before daring to wander about the wild outdoors.
-
             
             ### Datasets
             
@@ -154,9 +151,9 @@ app.layout = html.Div(
             Average Points per Year |  369103 |  240 |  361 
             Frequency |Every Instance | Daily| Daily 
             
-            We merged based on Date, where all three datasets overlapped from 2006-2015. This allowed us to plot correlations between
+            I merged based on Date, where all three datasets overlapped from 2006-2015. This allowed us to plot correlations between
             variables to determine if there was any relationship. In addition, it is important to note that the S&P500 data 
-            is only from when the stock market is open, not everyday. The following plot shows the number of data points we 
+            is only from when the stock market is open, not everyday. The following plot shows the number of data points I 
             have for each year due to this reason. Out of the 365 days in a year, we have around 251 for each year.
             """
                 ),
@@ -164,7 +161,7 @@ app.layout = html.Div(
                 dcc.Markdown(
                     """
             
-            This plot also represents how many data points we had per year in our final daily dataset.
+            This plot also represents how many data points I had per year in our final daily dataset.
             
             ### Crime EDA          
             """
