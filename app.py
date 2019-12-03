@@ -151,10 +151,10 @@ app.layout = html.Div(
             Average Points per Year |  369103 |  240 |  361 
             Frequency |Every Instance | Daily| Daily 
             
-            I merged based on Date, where all three datasets overlapped from 2006-2015. This allowed us to plot correlations between
+            I merged based on Date, where all three datasets overlapped from 2006-2015. This allowed me to plot correlations between
             variables to determine if there was any relationship. In addition, it is important to note that the S&P500 data 
             is only from when the stock market is open, not everyday. The following plot shows the number of data points I 
-            have for each year due to this reason. Out of the 365 days in a year, we have around 251 for each year.
+            have for each year due to this reason. Out of the 365 days in a year, there are around 251 data points for each year.
             """
                 ),
                 dcc.Graph(id="days_per_year", figure=days_per_year_fig),
