@@ -1,6 +1,6 @@
-# Dash with Analysis of Crime Rates
+# Dash with Analysis of Crime Rates 
 
-[Check out the website!](http://crime-rates-dash.herokuapp.com/)
+[Check out the website!](http://crime-rates-dash.herokuapp.com/) (It may take a while (20 seconds) to load)
 
 This project was done to learn Dash. Dash is a open-source Python library, that I wanted to experiment with as a easy, interactive way to showcase my data science projects in a website format. The content of the website is a basic analysis project about crime data in NYC, which is presented using Plotly.
 
